@@ -102,7 +102,7 @@ public class ScreenSolitarios extends MouseAdapter implements ActionListener {
         panel.addMouseListener(this);
         frame.getContentPane().add(panel, BorderLayout.CENTER);
 
-        textArea = new JTextArea(20, 70);
+        textArea = new JTextArea(00, 100);
         frame.getContentPane().add(new JScrollPane(textArea), BorderLayout.SOUTH);
 
         frame.pack();
@@ -188,11 +188,11 @@ public class ScreenSolitarios extends MouseAdapter implements ActionListener {
         
         public void paint(Graphics2D g) {
             Color body = Color.WHITE;
-            
+            System.out.println(graph.getLinksDestino(node).size());
             if (graph.getLinksDestino(node).size() <= preocupante) body = Color.RED;
             else if (graph.getLinksDestino(node).size() <= aviso) body = Color.YELLOW;
             
-            if (graph.getLinksDestino(node).size() >= salvajementePopular ) body = Color.BLUE;
+            else if (graph.getLinksDestino(node).size() >= salvajementePopular ) body = Color.BLUE;
             else if (graph.getLinksDestino(node).size() >= popular) body = Color.GREEN;
             
             g.setColor(body);
@@ -200,7 +200,7 @@ public class ScreenSolitarios extends MouseAdapter implements ActionListener {
             int y = node.getY() - miny;
             int r = NODE_RADIUS;
             g.fillOval(x - r, y - r, 2 * r, 2 * r);
-            g.setColor(Color.BLUE);
+            g.setColor(body);
             g.drawOval(x - r, y - r, 2 * r, 2 * r);
             drawText(g, x, y, node.getAlumno().getNombre());
         }

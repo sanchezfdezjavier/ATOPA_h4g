@@ -4,7 +4,7 @@
 package es.upm.h4g.atopa;
 
 /**
- * @author Daniel del Riego San Martín
+ * @author Daniel del Riego San MartÃ­n
  *
  */
 public class Node {
@@ -64,5 +64,3 @@ public class Node {
 		return "Node [alumno=" + alumno + ", x=" + x + ", y=" + y + "]";
 	}
 }
-
-	

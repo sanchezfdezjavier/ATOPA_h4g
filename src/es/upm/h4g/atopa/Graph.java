@@ -3,9 +3,9 @@ package es.upm.h4g.atopa;
 import java.util.*;
 import java.math.*;
 public class Graph {
-	private double radio = 50;
-	private final double varx = 100;
-	private final double vary = 70;
+	private double radio = 225;
+	private final double varx = 450;
+	private final double vary = 220;
 	private double alfa = 0;
 	private Map<Integer, Node> nodesmap = new HashMap<>();
 	private Map<Node, List<Link>> linksmap = new HashMap<>();
@@ -113,11 +113,9 @@ public class Graph {
 		for (int i = 0; i < getNodes().size();i++){
 		Node src = getNodes().get(i);
 		List <Link> linkList = this.linksmap.get(src);
-		//System.out.println(linkList);
+		
 		if(linkList!=null){
-			for(Link link : linkList){
-				System.out.println(link.getSrc().getAlumno().getNombre());
-			}
+			
 			for(Link link : linkList){
 				if (link.getDst().equals(dst)){
 					links.add(link);
