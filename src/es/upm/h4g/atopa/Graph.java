@@ -3,7 +3,9 @@ package es.upm.h4g.atopa;
 import java.util.*;
 import java.math.*;
 public class Graph {
-	private double radio;
+	private double radio = 50;
+	private final double varx = 100;
+	private final double vary = 70;
 	private double alfa = 0;
 	private Map<Integer, Node> nodesmap = new HashMap<>();
 	private Map<Node, List<Link>> linksmap = new HashMap<>();
@@ -13,27 +15,23 @@ public class Graph {
 	public Graph(Map<String, List<String>> respuestas, Clase clase) {
 		this.respuestas = respuestas;
 		this.clase = clase;
-		for (int w = 0; w < clase.getAlumnos().size(); w++){
-			double x = radio*Math.cos(alfa);
-			double y = radio*Math.sin(alfa);
+		for (int w = 0; w < clase.getNumAlumnos(); w++){
+			double x = radio*Math.cos(alfa) + varx;
+			double y = radio*Math.sin(alfa) + vary;
 			Node n = new Node(clase.getAlumnos().get(w), (int)x, (int)y);
 			alfa += 2*Math.PI/clase.getAlumnos().size();
 			addNode(n);
 		}
 		for (String s : respuestas.keySet()){
-			List<Integer> numeros = transforma(s);
-			for (int i = 1; i < numeros.size(); i++){
-				for(List<String> s2 : respuestas.values()){
-					for (String s3 : s2){
-						List<Integer> relaciones = transforma(s3);
-						for (int m = 0; m<relaciones.size();m++){
-							Link l = new Link(nodesmap.get(i), nodesmap.get(relaciones.get(m))); 
-							addLink(l);
-						}
-					}
-				}
-				
+			List<Integer> transformados = transforma(respuestas.get(s).get(0));
+			List<Link> links = new ArrayList<>();
+			for(Integer i: transformados){
+				links.add(new Link(getNode(Integer.parseInt(s)), getNode(i)));
 			}
+			
+			linksmap.put(getNode(Integer.parseInt(s)), links);
+			
+			
 			
 		
 		}
@@ -54,9 +52,9 @@ public class Graph {
 		return respuestas;
 
 	}
-	
+
 	public List<Alumno> getAlumnos(){
-		List <Alumno> alumnos = new ArrayList<>();
+		List<Alumno> alumnos = new ArrayList<>();
 		alumnos = clase.getAlumnos();
 		return alumnos;
 	}
@@ -65,11 +63,17 @@ public class Graph {
 		List<Link> links = new ArrayList<>();
 		for (int i = 0; i < getNodes().size();i++){
 		Node src = getNodes().get(i);
-		List<Link> linkList = this.linksmap.get(src);
-		for(Link link : linkList){
-			if (link.getDst().equals(dst)){
-				links.add(link);
-				continue;
+		List <Link> linkList = this.linksmap.get(src);
+		//System.out.println(linkList);
+		if(linkList!=null){
+			for(Link link : linkList){
+				System.out.println(link.getSrc().getAlumno().getNombre());
+			}
+			for(Link link : linkList){
+				if (link.getDst().equals(dst)){
+					links.add(link);
+					continue;
+				}
 			}
 		}
 	}

@@ -1,20 +1,18 @@
-/**
- * 
- */
 package es.upm.h4g.atopa;
+
 import java.util.*;
-/**
- * @author Daniel del Riego San Martín
- *
- */
+
+import es.upm.h4g.atopa.Node;
+
 public class Clase {
-	private Map<Integer, Alumno> alumnosmap;
+
+	private Map<Integer, Alumno> alumnos;
 	private String nombre;//Rollo 1c y eso
 	
 	public Clase(List<Alumno> alumnos, String nombre){
-		this.alumnosmap = new HashMap<>();
+		this.alumnos = new HashMap<>();
 		for (Alumno a: alumnos){
-			this.alumnosmap.put(a.getNumero(), a);
+			this.alumnos.put(a.getNumero(), a);
 			this.nombre = nombre;
 		}
 	}
@@ -27,11 +25,18 @@ public class Clase {
 		this.nombre = nombre;
 	}
 	
-	public Alumno getAlumno(int n){
-		return alumnosmap.get(n);
+	 public Alumno getAlumno(int n){
+	        return alumnos.get(n);
 	}
-	public List<Alumno> getAlumnos(){
-		List<Alumno> alumnos = new ArrayList<>(alumnosmap.values());
-		return alumnos;
-	}
+	 
+	 public int getNumAlumnos(){
+		 return this.alumnos.keySet().size();
+		 
+	 }
+	 
+	 public List<Alumno> getAlumnos(){
+		 return new ArrayList<Alumno> (alumnos.values());
+	 }
+	
+	
 }
