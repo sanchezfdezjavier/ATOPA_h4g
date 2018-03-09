@@ -21,7 +21,7 @@ import java.util.List;
  * @author jam
  * @version 28.12.2017
  */
-public class ScreenConflictivos extends MouseAdapter implements ActionListener {
+public class ScreenTrabajador extends MouseAdapter implements ActionListener {
     private static final int NODE_RADIUS = 20;
     private final Font font = new Font("sans-serif", Font.PLAIN, 12);
 
@@ -36,7 +36,7 @@ public class ScreenConflictivos extends MouseAdapter implements ActionListener {
     private final int minx;
     private final int miny;
     
-    private EstadoConflictivo estadoConflictivo;
+    private EstadoTrabajador estadoTrabajadores;
     
     private Node selNode0;
     private Node selNode1;
@@ -51,7 +51,7 @@ public class ScreenConflictivos extends MouseAdapter implements ActionListener {
      * @param maxy  maximum y position in pixels.
      * @param graph graph to show.
      */
-    public ScreenConflictivos(String title, int minx, int maxx, int miny, int maxy, Graph graph) {
+    public ScreenTrabajador(String title, int minx, int maxx, int miny, int maxy, Graph graph) {
         this.minx = minx;
         this.miny = miny;
         
@@ -182,11 +182,11 @@ public class ScreenConflictivos extends MouseAdapter implements ActionListener {
         public void paint(Graphics2D g) {
             Color body = Color.WHITE;
             System.out.println(graph.getLinksDestino(node).size());
-            if (node.getEstadoConflictivo() == EstadoConflictivo.NO_CONFLICTIVO) body = Color.GREEN;
-            else if (node.getEstadoConflictivo() == EstadoConflictivo.POCO_CONFLICTIVO) body = Color.YELLOW;
+            if (node.getEstadoTrabajador() == EstadoTrabajador.POCO_TRABAJADOR) body = Color.RED;
+            else if (node.getEstadoTrabajador() == EstadoTrabajador.NORMAL) body = Color.YELLOW;
             
-            else if (node.getEstadoConflictivo() == EstadoConflictivo.MEDIO_CONFLICTIVO) body = Color.ORANGE;
-            else if (node.getEstadoConflictivo() == EstadoConflictivo.MUY_CONFLICTIVO) body = Color.RED;
+            else if (node.getEstadoTrabajador() == EstadoTrabajador.MUY_TRABAJADOR) body = Color.GREEN;
+       
             
             g.setColor(body);
             int x = node.getX() - minx;
