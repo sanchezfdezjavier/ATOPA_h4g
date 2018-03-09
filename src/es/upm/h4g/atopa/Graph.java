@@ -54,7 +54,28 @@ public class Graph {
 		return respuestas;
 
 	}
+	
+	public List<Alumno> getAlumnos(){
+		List <Alumno> alumnos = new ArrayList<>();
+		alumnos = clase.getAlumnos();
+		return alumnos;
+	}
 
+	public List<Link> getLinksDestino(Node dst){
+		List<Link> links = new ArrayList<>();
+		for (int i = 0; i < getNodes().size();i++){
+		Node src = getNodes().get(i);
+		List<Link> linkList = this.linksmap.get(src);
+		for(Link link : linkList){
+			if (link.getDst().equals(dst)){
+				links.add(link);
+				continue;
+			}
+		}
+	}
+		return links;
+	}
+	
 	public List<Node> getNodes() {
 		ArrayList<Node> alumnos = new ArrayList<>(nodesmap.values());
 		return alumnos; 
