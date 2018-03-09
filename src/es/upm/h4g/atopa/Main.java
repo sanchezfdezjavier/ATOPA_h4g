@@ -1,5 +1,13 @@
 package es.upm.h4g.atopa;
 import java.util.*;
+import java.io.*;
+import java.net.*;
+
+import java.io.IOException;
+
+import java.net.URL;
+
+
 public class Main {
 
 	public static void main(String[] args) {
@@ -22,6 +30,10 @@ public class Main {
 			System.out.println(t);
 			System.out.println(valores.get(t));
 		}
+		
+		File f = new File("/home/default/Downloads/Hoja.xls");
+		System.out.println(f.canRead());
+		
 		
 		Graph g1 = new Graph(valores, primeroB);
 		
