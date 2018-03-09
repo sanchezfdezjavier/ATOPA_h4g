@@ -1,7 +1,10 @@
+/**
+ * 
+ */
 package es.upm.h4g.atopa;
 
 /**
- * @author Daniel del Riego San MartÃ­n
+ * @author Daniel del Riego San Martín
  *
  */
 public class Alumno {
@@ -11,6 +14,9 @@ public class Alumno {
 	private int numero;
 	private static int ID = 1;
 	private String clase;
+	EstadoConflictivo estadoConflictivo;
+	EstadoDivertido estadoDivertido;
+	EstadoTrabajador estadoTrabajador;
 public Alumno (String nombre, String apellidos, int edad, String clase){
 	this.nombre = nombre;
 	this.apellidos = apellidos;
@@ -19,6 +25,38 @@ public Alumno (String nombre, String apellidos, int edad, String clase){
 	ID++;
 	this.clase = clase;
 }
+
+
+public EstadoConflictivo getEstadoConflictivo() {
+	return estadoConflictivo;
+}
+
+
+public void setEstadoConflictivo(EstadoConflictivo estadoConflictivo) {
+	this.estadoConflictivo = estadoConflictivo;
+}
+
+
+public EstadoDivertido getEstadoDivertido() {
+	return estadoDivertido;
+}
+
+
+public void setEstadoDivertido(EstadoDivertido estadoDivertido) {
+	this.estadoDivertido = estadoDivertido;
+}
+
+
+public EstadoTrabajador getEstadoTrabajador() {
+	return estadoTrabajador;
+}
+
+
+public void setEstadoTrabajador(EstadoTrabajador estadoTrabajador) {
+	this.estadoTrabajador = estadoTrabajador;
+}
+
+
 public String getClase() {
 	return clase;
 }

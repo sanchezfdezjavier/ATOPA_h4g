@@ -1,12 +1,42 @@
+/**
+ * 
+ */
 package es.upm.h4g.atopa;
 
 /**
- * @author Daniel del Riego San MartÃ­n
+ * @author Daniel del Riego San Martín
  *
  */
 public class Node {
 	private Alumno alumno;
 	private int x, y;
+	EstadoConflictivo estadoConflictivo;
+	EstadoDivertido estadoDivertido;
+	EstadoTrabajador estadoTrabajador;
+	
+	public EstadoConflictivo getEstadoConflictivo() {
+		return estadoConflictivo;
+	}
+
+	public void setEstadoConflictivo(EstadoConflictivo estadoConflictivo) {
+		this.estadoConflictivo = estadoConflictivo;
+	}
+
+	public EstadoDivertido getEstadoDivertido() {
+		return estadoDivertido;
+	}
+
+	public void setEstadoDivertido(EstadoDivertido estadoDivertido) {
+		this.estadoDivertido = estadoDivertido;
+	}
+
+	public EstadoTrabajador getEstadoTrabajador() {
+		return estadoTrabajador;
+	}
+
+	public void setEstadoTrabajador(EstadoTrabajador estadoTrabajador) {
+		this.estadoTrabajador = estadoTrabajador;
+	}
 
 	public Node(Alumno alumno, int x, int y) {
 		if (alumno == null) {
@@ -34,3 +64,5 @@ public class Node {
 		return "Node [alumno=" + alumno + ", x=" + x + ", y=" + y + "]";
 	}
 }
+
+	

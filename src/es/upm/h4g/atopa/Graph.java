@@ -11,7 +11,9 @@ public class Graph {
 	private Map<Node, List<Link>> linksmap = new HashMap<>();
 	private Map<String, List<String>> respuestas;
 	private Clase clase;
-
+	private EstadoConflictivo estadoConflictivo;
+	private EstadoDivertido estadoDivertido;
+	private EstadoTrabajador estadoTrabajador;
 	public Graph(Map<String, List<String>> respuestas, Clase clase) {
 		this.respuestas = respuestas;
 		this.clase = clase;
@@ -21,6 +23,9 @@ public class Graph {
 			Node n = new Node(clase.getAlumnos().get(w), (int)x, (int)y);
 			alfa += 2*Math.PI/clase.getAlumnos().size();
 			addNode(n);
+			n.setEstadoConflictivo(estadoConflictivo(n));
+			n.setEstadoDivertido(estadoDivertido(n));
+			n.setEstadoTrabajador(estadoTrabajador(n));
 		}
 		for (String s : respuestas.keySet()){
 			List<Integer> transformados = transforma(respuestas.get(s).get(0));
@@ -30,7 +35,6 @@ public class Graph {
 			}
 			
 			linksmap.put(getNode(Integer.parseInt(s)), links);
-			
 			
 			
 		
@@ -52,7 +56,52 @@ public class Graph {
 		return respuestas;
 
 	}
+	
+	public EstadoConflictivo estadoConflictivo (Node nodo){
+		int n = getNodes().size();
+		if (getLinksDestino(nodo).size()<= n*0.05){
+			return EstadoConflictivo.NO_CONFLICTIVO;
+		}
+		else if (n*0.05 < getLinksDestino(nodo).size() && getLinksDestino(nodo).size() <= n*0.1){
+			return EstadoConflictivo.POCO_CONFLICTIVO;
+		}
+		else if (n*0.1 < getLinksDestino(nodo).size() && getLinksDestino(nodo).size() <= n*0.2){
+			return EstadoConflictivo.MEDIO_CONFLICTIVO;
+		}
+		else{
+			return EstadoConflictivo.MUY_CONFLICTIVO;
+		}
+	}
+	
+	public EstadoDivertido estadoDivertido (Node nodo){
+		int n = getNodes().size();
+		if (getLinksDestino(nodo).size()<= n*0.05){
+			return EstadoDivertido.POCO_DIVERTIDO;
+		}
+		else if (n*0.05 < getLinksDestino(nodo).size() && getLinksDestino(nodo).size() <= n*0.4){
+			return EstadoDivertido.NORMAL;
+		}
+		else if (n*0.4 < getLinksDestino(nodo).size() && getLinksDestino(nodo).size() <= n*0.6){
+			return EstadoDivertido.MUY_DIVERTIDO;
+		}
+		else{
+			return EstadoDivertido.DESTERNILLANTE;
+		}
+	}
 
+	public EstadoTrabajador estadoTrabajador (Node nodo){
+		int n = getNodes().size();
+		if (getLinksDestino(nodo).size()<= n*0.05){
+			return EstadoTrabajador.POCO_TRABAJADOR;
+		}
+		else if (n*0.05 < getLinksDestino(nodo).size() && getLinksDestino(nodo).size() <= n*0.4){
+			return EstadoTrabajador.NORMAL;
+		}
+		else {
+			return EstadoTrabajador.MUY_TRABAJADOR;
+		}
+		
+	}
 	public List<Alumno> getAlumnos(){
 		List<Alumno> alumnos = new ArrayList<>();
 		alumnos = clase.getAlumnos();
