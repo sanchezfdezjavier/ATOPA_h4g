@@ -9,10 +9,10 @@ package es.upm.h4g.atopa;
  */
 
 public class Link {
-	private Alumno src, dst;
+	private Node src, dst;
 	private int weight;
 
-	public Link(Alumno src, Alumno dst, int weight) {
+	public Link(Node src, Node dst, int weight) {
 		if (src == null || dst == null || weight < 0) {
 			throw new IllegalArgumentException();
 		} else {
@@ -22,7 +22,7 @@ public class Link {
 		}
 	}
 
-	public Link(Alumno src, Alumno dst) {
+	public Link(Node src, Node dst) {
 		if (src == null || dst == null) {
 			throw new IllegalArgumentException();
 		} else {
@@ -30,11 +30,11 @@ public class Link {
 			this.dst = dst;
 		}
 	}
-	public Alumno getSrc() {
+	public Node getSrc() {
 		return src;
 	}
 
-	public Alumno getDst() {
+	public Node getDst() {
 		return dst;
 	}
 

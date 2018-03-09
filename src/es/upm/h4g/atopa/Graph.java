@@ -6,22 +6,28 @@ public class Graph {
 	private double radio;
 	private double alfa = 0;
 	private Map<Integer, Node> nodesmap = new HashMap<>();
-	private Map<Alumno, List<Link>> linksmap = new HashMap<>();
+	private Map<Node, List<Link>> linksmap = new HashMap<>();
 	private Map<String, List<String>> respuestas;
+	private Clase clase;
 
-	public Graph(Map<String, List<String>> respuestas) {
+	public Graph(Map<String, List<String>> respuestas, Clase clase) {
 		this.respuestas = respuestas;
+		this.clase = clase;
+		for (int w = 0; w < clase.getAlumnos().size(); w++){
+			double x = radio*Math.cos(alfa);
+			double y = radio*Math.sin(alfa);
+			Node n = new Node(clase.getAlumnos().get(w), (int)x, (int)y);
+			alfa += 2*Math.PI/clase.getAlumnos().size();
+			addNode(n);
+		}
 		for (String s : respuestas.keySet()){
 			List<Integer> numeros = transforma(s);
 			for (int i = 1; i < numeros.size(); i++){
-				double x = radio*Math.cos(alfa);
-				double y = radio*Math.sin(alfa);
-				Node n = new Node(getNode(i).getAlumno(), (int)x, (int)y);
 				for(List<String> s2 : respuestas.values()){
 					for (String s3 : s2){
 						List<Integer> relaciones = transforma(s3);
 						for (int m = 0; m<relaciones.size();m++){
-							Link l = new Link(getNode(i).getAlumno(), getNode(m).getAlumno());
+							Link l = new Link(nodesmap.get(i), nodesmap.get(relaciones.get(m))); 
 							addLink(l);
 						}
 					}
@@ -75,7 +81,7 @@ public class Graph {
 	}
 
 	public void addLink(Link link) {
-		Alumno src = getAlumno(link.getSrc().getNumero());
+		Node src = link.getSrc();
 		if (src != null){
 			List<Link> links = getLinks(src);
 			if (links.size() <= 0){
@@ -89,7 +95,7 @@ public class Graph {
 		}
 	}
 
-	public void addLink2D(Alumno a, Alumno b, int w) {
+	public void addLink2D(Node a, Node b, int w) {
 		Link link1 = new Link(a, b, w);
 		Link link2 = new Link(b, a, w);
 		this.addLink(link1);
@@ -103,14 +109,14 @@ public class Graph {
 	public Link getLink(Node src, Node dst) {
 		List<Link> linkList = this.linksmap.get(src);
 		for(Link link : linkList){
-			if (link.getSrc().equals(src)&& link.getDst().getNombre().equals(dst)){
+			if (link.getSrc().equals(src)&& link.getDst().equals(dst)){
 				return link;
 			}
 		}
 		return null;
 	}
 
-	public List<Link> getLinks(Alumno alumno) {
+	public List<Link> getLinks(Node alumno) {
 		List<Link> alumnolinks = linksmap.get(alumno);
 		if (alumnolinks != null){
 			return alumnolinks;
