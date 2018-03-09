@@ -1,36 +1,51 @@
 package es.upm.h4g.atopa;
 
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.FormulaEvaluator;
-import org.apache.poi.ss.usermodel.Row;
 
 import java.io.*;
-import java.util.*;
+import java.util.Iterator;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 public class Read {
-    public static void main(String [] args) throws IOException{
-        //ejecucion de la lectura del excel
+    public static void main(String[] args) {
+        try {
 
-        FileInputStream file= new FileInputStream(new File("testExcel.xlsx"));
-        HSSFWorkbook wb= new HSSFWorkbook(file);
-        HSSFSheet sheet= wb.getSheet("O");
-
-        FormulaEvaluator fomula_evaluator= wb.getCreationHelper().createFormulaEvaluator();
-
-        for(Row row: sheet){
-            for(Cell cell: row){
-                switch(fomula_evaluator.evaluateInCell(cell).getCellType()){
-                    case Cell.CELL_TYPE_NUMERIC:
-                        System.out.print(cell.getNumericCellValue()+  "\t\t");
-                        break;
-                    case Cell.CELL_TYPE_STRING:
-                        System.out.print(cell.getStringCellValue()+ "\t\t");
-                        break;
+            FileInputStream file = new FileInputStream(new File("testExcel.xls"));
+            HSSFWorkbook workbook = new HSSFWorkbook(file);
+            HSSFSheet sheet = workbook.getSheetAt(0);
+            Iterator<Row> rowIterator = sheet.iterator();
+            rowIterator.next();
+            while (rowIterator.hasNext()) {
+                Row row = rowIterator.next();
+                //For each row, iterate through each columns
+                Iterator<Cell> cellIterator = row.cellIterator();
+                while (cellIterator.hasNext()) {
+                    Cell cell = cellIterator.next();
+                    switch (cell.getCellType()) {
+                        case Cell.CELL_TYPE_BOOLEAN:
+                            System.out.println("boolean===>>>" + cell.getBooleanCellValue() + "\t");
+                            break;
+                        case Cell.CELL_TYPE_NUMERIC:
+                            System.out.println("numeric===>>>" + cell.getNumericCellValue() + "\t");
+                            break;
+                        case Cell.CELL_TYPE_STRING:
+                            System.out.println("String===>>>" + cell.getStringCellValue() + "\t");
+                            break;
+                    }
                 }
+                System.out.println("");
             }
-
+            file.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
+
 }
+
+
