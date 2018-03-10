@@ -82,7 +82,7 @@ public class ScreenTrabajador extends MouseAdapter implements ActionListener {
         bfsButton = new JButton("BFS");
         bfsButton.addActionListener(this);
         toolBar.add(bfsButton);
-        ekButton = new JButton("Edmonds–Karp");
+        ekButton = new JButton("Edmondsâ€“Karp");
         ekButton.addActionListener(this);
         toolBar.add(ekButton);
         */
@@ -181,7 +181,7 @@ public class ScreenTrabajador extends MouseAdapter implements ActionListener {
         
         public void paint(Graphics2D g) {
             Color body = Color.WHITE;
-            System.out.println(graph.getLinksDestino(node).size());
+            
             if (node.getEstadoTrabajador() == EstadoTrabajador.POCO_TRABAJADOR) body = Color.RED;
             else if (node.getEstadoTrabajador() == EstadoTrabajador.NORMAL) body = Color.YELLOW;
             

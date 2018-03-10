@@ -82,7 +82,7 @@ public class ScreenDivertidos extends MouseAdapter implements ActionListener {
         bfsButton = new JButton("BFS");
         bfsButton.addActionListener(this);
         toolBar.add(bfsButton);
-        ekButton = new JButton("Edmonds–Karp");
+        ekButton = new JButton("Edmondsâ€“Karp");
         ekButton.addActionListener(this);
         toolBar.add(ekButton);
         */
@@ -181,7 +181,7 @@ public class ScreenDivertidos extends MouseAdapter implements ActionListener {
         
         public void paint(Graphics2D g) {
             Color body = Color.WHITE;
-            System.out.println(graph.getLinksDestino(node).size());
+            //System.out.println(graph.getLinksDestino(node).size());
             if (node.getEstadoDivertido() == EstadoDivertido.POCO_DIVERTIDO) body = Color.BLACK;
             else if (node.getEstadoDivertido() == EstadoDivertido.NORMAL) body = Color.DARK_GRAY;
             

@@ -82,7 +82,7 @@ public class ScreenConflictivos extends MouseAdapter implements ActionListener {
         bfsButton = new JButton("BFS");
         bfsButton.addActionListener(this);
         toolBar.add(bfsButton);
-        ekButton = new JButton("Edmonds–Karp");
+        ekButton = new JButton("Edmondsâ€“Karp");
         ekButton.addActionListener(this);
         toolBar.add(ekButton);
         */
@@ -181,7 +181,8 @@ public class ScreenConflictivos extends MouseAdapter implements ActionListener {
         
         public void paint(Graphics2D g) {
             Color body = Color.WHITE;
-            System.out.println(graph.getLinksDestino(node).size());
+            
+            //System.out.println(node.getEstadoConflictivo());
             if (node.getEstadoConflictivo() == EstadoConflictivo.NO_CONFLICTIVO) body = Color.GREEN;
             else if (node.getEstadoConflictivo() == EstadoConflictivo.POCO_CONFLICTIVO) body = Color.YELLOW;
             

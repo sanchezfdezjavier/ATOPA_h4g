@@ -84,10 +84,12 @@ public class ScreenSolitarios extends MouseAdapter implements ActionListener {
         dijkstraButton = new JButton("Dijkstra");
         dijkstraButton.addActionListener(this);
         toolBar.add(dijkstraButton);
+
         bfsButton = new JButton("BFS");
         bfsButton.addActionListener(this);
         toolBar.add(bfsButton);
-        ekButton = new JButton("Edmonds–Karp");
+
+        ekButton = new JButton("Edmondsâ€“Karp");
         ekButton.addActionListener(this);
         toolBar.add(ekButton);
         */
@@ -100,7 +102,7 @@ public class ScreenSolitarios extends MouseAdapter implements ActionListener {
         panel.addMouseListener(this);
         frame.getContentPane().add(panel, BorderLayout.CENTER);
 
-        textArea = new JTextArea(20, 70);
+        textArea = new JTextArea(00, 100);
         frame.getContentPane().add(new JScrollPane(textArea), BorderLayout.SOUTH);
 
         frame.pack();
@@ -186,19 +188,19 @@ public class ScreenSolitarios extends MouseAdapter implements ActionListener {
         
         public void paint(Graphics2D g) {
             Color body = Color.WHITE;
+            System.out.println(graph.getLinksDestino(node, graph.getLmSolitarios()).size());
+            if (graph.getLinksDestino(node, graph.getLmSolitarios()).size() <= preocupante) body = Color.RED;
+            else if (graph.getLinksDestino(node, graph.getLmSolitarios()).size() <= aviso) body = Color.YELLOW;
             
-            if (graph.getLinksDestino(node).size() <= preocupante) body = Color.RED;
-            else if (graph.getLinksDestino(node).size() <= aviso) body = Color.YELLOW;
-            
-            if (graph.getLinksDestino(node).size() >= salvajementePopular ) body = Color.BLUE;
-            else if (graph.getLinksDestino(node).size() >= popular) body = Color.GREEN;
+            else if (graph.getLinksDestino(node, graph.getLmSolitarios()).size() >= salvajementePopular ) body = Color.BLUE;
+            else if (graph.getLinksDestino(node, graph.getLmSolitarios()).size() >= popular) body = Color.GREEN;
             
             g.setColor(body);
             int x = node.getX() - minx;
             int y = node.getY() - miny;
             int r = NODE_RADIUS;
             g.fillOval(x - r, y - r, 2 * r, 2 * r);
-            g.setColor(Color.BLUE);
+            g.setColor(body);
             g.drawOval(x - r, y - r, 2 * r, 2 * r);
             drawText(g, x, y, node.getAlumno().getNombre());
         }

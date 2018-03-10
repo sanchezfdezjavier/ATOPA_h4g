@@ -8,13 +8,18 @@ public class Graph {
 	private final double vary = 220;
 	private double alfa = 0;
 	private Map<Integer, Node> nodesmap = new HashMap<>();
-	private Map<Node, List<Link>> linksmap = new HashMap<>();
+	private Map<Node, List<Link>> lmSolitarios, lmConflictivos, lmDivertidos, lmTrabajadores;
 	private Map<String, List<String>> respuestas;
 	private Clase clase;
 	private EstadoConflictivo estadoConflictivo;
 	private EstadoDivertido estadoDivertido;
 	private EstadoTrabajador estadoTrabajador;
 	public Graph(Map<String, List<String>> respuestas, Clase clase) {
+		lmSolitarios = new HashMap<>();
+		lmConflictivos = new HashMap<>();
+		lmDivertidos = new HashMap<>();
+		lmTrabajadores = new HashMap<>();
+		
 		this.respuestas = respuestas;
 		this.clase = clase;
 		for (int w = 0; w < clase.getNumAlumnos(); w++){
@@ -23,21 +28,80 @@ public class Graph {
 			Node n = new Node(clase.getAlumnos().get(w), (int)x, (int)y);
 			alfa += 2*Math.PI/clase.getAlumnos().size();
 			addNode(n);
+			System.out.println("Llegamos aqui");
+			
+		}
+		/*for(int i = 0; i<4; i++){
+			for (String s : respuestas.keySet()){
+				List<Integer> transformados = transforma(respuestas.get(s).get(i));
+				List<Link> links = new ArrayList<>();
+				for(Integer j: transformados){
+					links.add(new Link(getNode(Integer.parseInt(s)), getNode(j)));
+				}
+				
+				lmSolitarios.put(getNode(Integer.parseInt(s)), links);
+			}
+		}*/
+		
+		createLinksSolitarios();
+		createLinksConflictivos();
+		createLinksTrabajadores();
+		createLinksDivertidos();
+		
+		for(Node n: nodesmap.values()){
 			n.setEstadoConflictivo(estadoConflictivo(n));
 			n.setEstadoDivertido(estadoDivertido(n));
 			n.setEstadoTrabajador(estadoTrabajador(n));
 		}
+		
+	}
+	
+	public void createLinksSolitarios(){
+		
 		for (String s : respuestas.keySet()){
 			List<Integer> transformados = transforma(respuestas.get(s).get(0));
 			List<Link> links = new ArrayList<>();
-			for(Integer i: transformados){
-				links.add(new Link(getNode(Integer.parseInt(s)), getNode(i)));
+			for(Integer j: transformados){
+				links.add(new Link(getNode(Integer.parseInt(s)), getNode(j)));
 			}
 			
-			linksmap.put(getNode(Integer.parseInt(s)), links);
+			lmSolitarios.put(getNode(Integer.parseInt(s)), links);
+		}
+	}
+	
+	public void createLinksConflictivos(){
+		for (String s : respuestas.keySet()){
+			List<Integer> transformados = transforma(respuestas.get(s).get(1));
+			List<Link> links = new ArrayList<>();
+			for(Integer j: transformados){
+				links.add(new Link(getNode(Integer.parseInt(s)), getNode(j)));
+			}
 			
+			lmConflictivos.put(getNode(Integer.parseInt(s)), links);
+		}
+	}
+	
+	public void createLinksTrabajadores(){
+		for (String s : respuestas.keySet()){
+			List<Integer> transformados = transforma(respuestas.get(s).get(2));
+			List<Link> links = new ArrayList<>();
+			for(Integer j: transformados){
+				links.add(new Link(getNode(Integer.parseInt(s)), getNode(j)));
+			}
 			
-		
+			lmTrabajadores.put(getNode(Integer.parseInt(s)), links);
+		}
+	}
+	
+	public void createLinksDivertidos(){
+		for (String s : respuestas.keySet()){
+			List<Integer> transformados = transforma(respuestas.get(s).get(3));
+			List<Link> links = new ArrayList<>();
+			for(Integer j: transformados){
+				links.add(new Link(getNode(Integer.parseInt(s)), getNode(j)));
+			}
+			
+			lmDivertidos.put(getNode(Integer.parseInt(s)), links);
 		}
 	}
 	
@@ -59,13 +123,14 @@ public class Graph {
 	
 	public EstadoConflictivo estadoConflictivo (Node nodo){
 		int n = getNodes().size();
-		if (getLinksDestino(nodo).size()<= n*0.05){
+		System.out.println(n + " " + getLinksDestino(nodo, lmConflictivos).size());
+		if (getLinksDestino(nodo, lmConflictivos).size()<= (int)(n*0.05)){
 			return EstadoConflictivo.NO_CONFLICTIVO;
 		}
-		else if (n*0.05 < getLinksDestino(nodo).size() && getLinksDestino(nodo).size() <= n*0.1){
+		else if (n*0.05 < getLinksDestino(nodo, lmConflictivos).size() && getLinksDestino(nodo, lmConflictivos).size() <= (int)(n*0.1)){
 			return EstadoConflictivo.POCO_CONFLICTIVO;
 		}
-		else if (n*0.1 < getLinksDestino(nodo).size() && getLinksDestino(nodo).size() <= n*0.2){
+		else if (n*0.1 < getLinksDestino(nodo, lmConflictivos).size() && getLinksDestino(nodo, lmConflictivos).size() <= (int)(n*0.2)){
 			return EstadoConflictivo.MEDIO_CONFLICTIVO;
 		}
 		else{
@@ -75,13 +140,13 @@ public class Graph {
 	
 	public EstadoDivertido estadoDivertido (Node nodo){
 		int n = getNodes().size();
-		if (getLinksDestino(nodo).size()<= n*0.05){
+		if (getLinksDestino(nodo, lmDivertidos).size()<= n*0.05){
 			return EstadoDivertido.POCO_DIVERTIDO;
 		}
-		else if (n*0.05 < getLinksDestino(nodo).size() && getLinksDestino(nodo).size() <= n*0.4){
+		else if (n*0.05 < getLinksDestino(nodo, lmDivertidos).size() && getLinksDestino(nodo, lmDivertidos).size() <= n*0.4){
 			return EstadoDivertido.NORMAL;
 		}
-		else if (n*0.4 < getLinksDestino(nodo).size() && getLinksDestino(nodo).size() <= n*0.6){
+		else if (n*0.4 < getLinksDestino(nodo, lmDivertidos).size() && getLinksDestino(nodo, lmDivertidos).size() <= n*0.6){
 			return EstadoDivertido.MUY_DIVERTIDO;
 		}
 		else{
@@ -91,10 +156,10 @@ public class Graph {
 
 	public EstadoTrabajador estadoTrabajador (Node nodo){
 		int n = getNodes().size();
-		if (getLinksDestino(nodo).size()<= n*0.05){
+		if (getLinksDestino(nodo, lmTrabajadores).size()<= n*0.05){
 			return EstadoTrabajador.POCO_TRABAJADOR;
 		}
-		else if (n*0.05 < getLinksDestino(nodo).size() && getLinksDestino(nodo).size() <= n*0.4){
+		else if (n*0.05 < getLinksDestino(nodo, lmTrabajadores).size() && getLinksDestino(nodo, lmTrabajadores).size() <= n*0.4){
 			return EstadoTrabajador.NORMAL;
 		}
 		else {
@@ -108,22 +173,22 @@ public class Graph {
 		return alumnos;
 	}
 
-	public List<Link> getLinksDestino(Node dst){
+	public List<Link> getLinksDestino(Node dst, Map<Node, List<Link>> linkMap){
 		List<Link> links = new ArrayList<>();
 		for (int i = 0; i < getNodes().size();i++){
-		Node src = getNodes().get(i);
-		List <Link> linkList = this.linksmap.get(src);
-		
-		if(linkList!=null){
-			
-			for(Link link : linkList){
-				if (link.getDst().equals(dst)){
-					links.add(link);
-					continue;
+			Node src = getNodes().get(i);
+			List <Link> linkList = linkMap.get(src);
+
+			if(linkList!=null){
+
+				for(Link link : linkList){
+					if (link.getDst().equals(dst)){
+						links.add(link);
+						continue;
+					}
 				}
 			}
 		}
-	}
 		return links;
 	}
 	
@@ -133,7 +198,7 @@ public class Graph {
 	}
 
 	public List<Link> getLinks() {
-		ArrayList<List<Link>> links = new ArrayList<>(linksmap.values());
+		ArrayList<List<Link>> links = new ArrayList<>(lmSolitarios.values());
 		ArrayList<Link> linksdevueltos = new ArrayList<>();
 		for(List<Link> link : links){
 			for (Link link1 : link){
@@ -149,7 +214,9 @@ public class Graph {
 	}
 
 	public void addNode(Node node) {
+		//System.out.println(node.getAlumno().getNumero());
 		nodesmap.put(node.getAlumno().getNumero(), node);
+		System.out.println("Ahora qui");
 	}
 
 	public void addLink(Link link) {
@@ -158,7 +225,7 @@ public class Graph {
 			List<Link> links = getLinks(src);
 			if (links.size() <= 0){
 				links = new ArrayList<>();
-				this.linksmap.put(src, links);
+				this.lmSolitarios.put(src, links);
 				links.add(link);
 			}
 			else{
@@ -179,7 +246,7 @@ public class Graph {
 	}
 
 	public Link getLink(Node src, Node dst) {
-		List<Link> linkList = this.linksmap.get(src);
+		List<Link> linkList = this.lmSolitarios.get(src);
 		for(Link link : linkList){
 			if (link.getSrc().equals(src)&& link.getDst().equals(dst)){
 				return link;
@@ -189,7 +256,7 @@ public class Graph {
 	}
 
 	public List<Link> getLinks(Node alumno) {
-		List<Link> alumnolinks = linksmap.get(alumno);
+		List<Link> alumnolinks = lmSolitarios.get(alumno);
 		if (alumnolinks != null){
 			return alumnolinks;
 		}
@@ -213,4 +280,38 @@ public class Graph {
 		}
 		return sum;
 	}
+
+	public Map<Node, List<Link>> getLmSolitarios() {
+		return lmSolitarios;
+	}
+
+	public void setLmSolitarios(Map<Node, List<Link>> lmSolitarios) {
+		this.lmSolitarios = lmSolitarios;
+	}
+
+	public Map<Node, List<Link>> getLmConflictivos() {
+		return lmConflictivos;
+	}
+
+	public void setLmConflictivos(Map<Node, List<Link>> lmConflictivos) {
+		this.lmConflictivos = lmConflictivos;
+	}
+
+	public Map<Node, List<Link>> getLmDivertidos() {
+		return lmDivertidos;
+	}
+
+	public void setLmDivertidos(Map<Node, List<Link>> lmDivertidos) {
+		this.lmDivertidos = lmDivertidos;
+	}
+
+	public Map<Node, List<Link>> getLmTrabajadores() {
+		return lmTrabajadores;
+	}
+
+	public void setLmTrabajadores(Map<Node, List<Link>> lmTrabajadores) {
+		this.lmTrabajadores = lmTrabajadores;
+	}
+	
+	
 }
